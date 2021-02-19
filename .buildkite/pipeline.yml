@@ -5,7 +5,7 @@ steps:
   key: "build"
 - label: "Download Twistcli"
   command:
-    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli ${TL_CONSOLE}/api/v1/util/twistcli"
+    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli $${CONSOLE}/api/v1/util/twistcli"
     - "chmod a+x ./twistcli"
   key: "download"
 - label: "Twistlock Scan"
