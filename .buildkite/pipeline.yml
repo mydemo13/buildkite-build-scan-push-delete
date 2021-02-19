@@ -1,0 +1,35 @@
+steps:
+- label: "Build :docker: Image"
+  command:
+    - "docker build . -t $${REGISTRY}/shellinabox-buildkite:${BUILDKITE_BUILD_NUMBER}"
+  key: "build"
+- label: "Download Twistcli"
+  command:
+    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli ${TL_CONSOLE}/api/v1/util/twistcli"
+    - "chmod a+x ./twistcli"
+  key: "download"
+- label: "Twistlock Scan"
+  command:
+    - "twistcli images scan -u $${USERNAME} -p $${PASSWORD} --address $${CONSOLE} $${REGISTRY}/shellinabox-buildkite:${BUILDKITE_BUILD_NUMBER}"
+  key: "scan"
+  depends_on:
+    - step: "build"
+    - step: "download"
+- label: "Push :docker: Image"
+  command:
+    - "docker push $${REGISTRY}/shellinabox-buildkite:${BUILDKITE_BUILD_NUMBER}"
+  key: "push"
+  depends_on:
+    - step: "build"
+    - step: "scan"
+      allow_failure: false
+- label: "Delete :docker: Image"
+  command:
+    - "docker image rm $${REGISTRY}/shellinabox-buildkite:${BUILDKITE_BUILD_NUMBER}"
+  key: "delete"
+  depends_on:
+    - step: "build"
+    - step: "scan"
+      allow_failure: true
+    - step: "push"
+      allow_failure: true
