@@ -5,12 +5,11 @@ steps:
   key: "build"
 - label: "Download Twistcli"
   command:
-    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli $${CONSOLE}/api/v1/util/twistcli"
-    - "chmod a+x ./twistcli"
+    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli $${CONSOLE}/api/v1/util/twistcli && chmod a+x ./twistcli"
   key: "download"
 - label: "Twistlock Scan"
   command:
-    - "twistcli images scan -u $${USERNAME} -p $${PASSWORD} --address $${CONSOLE} $${REGISTRY}/shellinabox-buildkite:${BUILDKITE_BUILD_NUMBER}"
+    - "./twistcli images scan -u $${USERNAME} -p $${PASSWORD} --address $${CONSOLE} $${REGISTRY}/shellinabox-buildkite:${BUILDKITE_BUILD_NUMBER}"
   key: "scan"
   depends_on:
     - step: "build"
