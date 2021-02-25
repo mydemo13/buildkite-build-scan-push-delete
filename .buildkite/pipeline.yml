@@ -5,7 +5,7 @@ steps:
   key: "build"
 - label: "Download Twistcli and Scan :docker: Image"
   command:
-    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli $${CONSOLE}/api/v1/util/twistcli && chmod a+x ./twistcli && ./twistcli images scan -u $${USERNAME} -p $${PASSWORD} --address $${CONSOLE} $${REGISTRY}/shellinabox2-buildkite:${BUILDKITE_BUILD_NUMBER}"
+    - "curl -k -u $${USERNAME}:$${PASSWORD} --output ./twistcli $${CONSOLE}/api/v1/util/twistcli && chmod a+x ./twistcli && ./twistcli images scan -u $${USERNAME} -p $${PASSWORD} --details --address $${CONSOLE} $${REGISTRY}/shellinabox2-buildkite:${BUILDKITE_BUILD_NUMBER}"
   key: "scan"
   depends_on:
     - step: "build"
